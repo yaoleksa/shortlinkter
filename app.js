@@ -6,12 +6,10 @@ const port = 3000;
 http.createServer((req, res) => {
     if(req.method === 'POST') {
         res.write('SOME STRANGE LOGIC');
-    } else {
-        if(req.url.toString().length > 1) {
-            res.write('Do something absolutely different');
-        } else {
-            res.write('Use standart path');
-        }
+    } else if(req.method === 'GET' && req.url.toString().match(/\w+/)) {
+        res.writeHead(302, {
+            'location': 'https://yaoleksa.github.io/tutorial/3.html#chapter6'
+        });
     }
     res.end();
 }).listen(port, hostname, () => {
