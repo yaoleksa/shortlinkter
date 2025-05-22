@@ -5,7 +5,7 @@ const { Pool } = require('pg');
 
 // Create an pool to interact with database
 const pool = new Pool({
-    connectionString: `postgresql://${process.env.DBuser}:${process.env.DBpassword}@${process.env.DBhost}.${process.env.DBregion}.render.com/${process.env.DBname}`,
+    connectionString: `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOSTNAME}.${process.env.DB_REGION}.render.com/${process.env.DB_NAME}`,
     ssl: {
         rejectUnauthorized: false
     }
@@ -23,10 +23,7 @@ pool.query('CREATE TABLE IF NOT EXISTS links (id character(5) PRIMARY KEY, link 
     console.log('table has been created');
 }).catch(err => {
     console.error(err.message);
-})
-
-const hostname = '127.0.0.1';
-const port = process.env.DBport;
+});
 
 http.createServer((req, res) => {
     if(req.method === 'POST') {
@@ -37,6 +34,6 @@ http.createServer((req, res) => {
         });
     }
     res.end();
-}).listen(port, hostname, () => {
-    console.log(`http://${hostname}:${port}`);
+}).listen(process.env.PORT, process.env.HOSTNAME, () => {
+    console.log(`http://${process.env.HOSTNAME}:${process.env.PORT}`);
 });
