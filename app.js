@@ -3,6 +3,7 @@ require('dotenv').config();
 const http = require('http');
 const { Pool } = require('pg');
 
+// Create an pool to interact with database
 const pool = new Pool({
     connectionString: `postgresql://${process.env.DBuser}:${process.env.DBpassword}@${process.env.DBhost}.${process.env.DBregion}.render.com/${process.env.DBname}`,
     ssl: {
@@ -10,8 +11,16 @@ const pool = new Pool({
     }
 });
 
+// Connect with database
 pool.connect().then(() => {
     console.log('connected');
+}).catch(err => {
+    console.error(err.message);
+});
+
+// Initial query to create a table
+pool.query('CREATE TABLE IF NOT EXISTS links (id character(5) PRIMARY KEY, link TEXT)').then(() => {
+    console.log('table has been created');
 }).catch(err => {
     console.error(err.message);
 })
