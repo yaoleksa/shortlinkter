@@ -3,6 +3,13 @@ require('dotenv').config();
 const http = require('http');
 const { Pool } = require('pg');
 
+// Define an id length
+const idLength = 4;
+
+// Create an id generator
+const ShortUniqueId = require('short-unique-id');
+const idGen = new ShortUniqueId({ length: idLength });
+
 // Create an pool to interact with database
 const pool = new Pool({
     connectionString: `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOSTNAME}.${process.env.DB_REGION}.render.com/${process.env.DB_NAME}`,
@@ -19,7 +26,7 @@ pool.connect().then(() => {
 });
 
 // Initial query to create a table
-pool.query('CREATE TABLE IF NOT EXISTS links (id character(4) PRIMARY KEY, link TEXT);').then(() => {
+pool.query(`CREATE TABLE IF NOT EXISTS links (id character(${idLength}) PRIMARY KEY, link TEXT);`).then(() => {
     console.log('table has been created');
 }).catch(err => {
     console.error(err.message);
@@ -35,7 +42,7 @@ http.createServer((req, res) => {
                 if(!JSON.parse(body)["link"].match(/http[s]{0,1}:\/\/\w+/)) {
                     res.end("ERROR: INVALID URL FORMAT");
                 } else {
-                    res.end("LINK HAS BEEN SUCCESSFULY SHORTED AND STORED");
+                    res.end("LINK HAS BEEN SUCCESSFULY SHORTED AND STORED" + "  " + idGen.rnd());
                 }
             } catch(err) {
                 res.end(err.message);
