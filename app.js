@@ -30,20 +30,22 @@ http.createServer((req, res) => {
         let body = '';
         req.on('data', chunk => {
             body += chunk;
-        });
-        req.on('end', () => {
-            if(body.match(/http[s][0, 1]:\/\/\w+/)) {
-                res.write('ERROR: INVALID URL FORMAT');
+        }).on('end', () => {
+            try {
+                if(!JSON.parse(body)["link"].match(/http[s]{0,1}:\/\/\w+/)) {
+                    res.end("ERROR: INVALID URL FORMAT");
+                } else {
+                    res.end("LINK HAS BEEN SUCCESSFULY SHORTED AND STORED");
+                }
+            } catch(err) {
+                res.end(err.message);
             }
         });
-        console.log(body.match(/http[s][0, 1]:\/\/\w+/));
-        res.write('DONE');
     } else if(req.method === 'GET' && req.url.toString().match(/\w+/)) {
         res.writeHead(302, {
             'location': 'https://yaoleksa.github.io/tutorial/3.html#chapter6'
         });
     }
-    res.end();
 }).listen(process.env.PORT, process.env.HOSTNAME, () => {
     console.log(`http://${process.env.HOSTNAME}:${process.env.PORT}`);
 });
