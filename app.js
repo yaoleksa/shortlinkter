@@ -19,7 +19,7 @@ pool.connect().then(() => {
 });
 
 // Initial query to create a table
-pool.query('CREATE TABLE IF NOT EXISTS links (id character(5) PRIMARY KEY, link TEXT)').then(() => {
+pool.query('CREATE TABLE IF NOT EXISTS links (id character(4) PRIMARY KEY, link TEXT);').then(() => {
     console.log('table has been created');
 }).catch(err => {
     console.error(err.message);
@@ -27,7 +27,17 @@ pool.query('CREATE TABLE IF NOT EXISTS links (id character(5) PRIMARY KEY, link 
 
 http.createServer((req, res) => {
     if(req.method === 'POST') {
-        res.write('SOME STRANGE LOGIC');
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk;
+        });
+        req.on('end', () => {
+            if(body.match(/http[s][0, 1]:\/\/\w+/)) {
+                res.write('ERROR: INVALID URL FORMAT');
+            }
+        });
+        console.log(body.match(/http[s][0, 1]:\/\/\w+/));
+        res.write('DONE');
     } else if(req.method === 'GET' && req.url.toString().match(/\w+/)) {
         res.writeHead(302, {
             'location': 'https://yaoleksa.github.io/tutorial/3.html#chapter6'
