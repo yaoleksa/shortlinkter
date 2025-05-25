@@ -39,10 +39,26 @@ http.createServer((req, res) => {
             body += chunk;
         }).on('end', () => {
             try {
-                if(!JSON.parse(body)["link"].match(/http[s]{0,1}:\/\/\w+/)) {
+                const link = JSON.parse(body)["link"];
+                if(!link.match(/http[s]{0,1}:\/\/\w+/)) {
                     res.end("ERROR: INVALID URL FORMAT");
                 } else {
-                    res.end("LINK HAS BEEN SUCCESSFULY SHORTED AND STORED" + "  " + idGen.rnd());
+                    const linkId = idGen.rnd();
+                    let fresh = true;
+                    pool.query('SELECT * FROM links;').then(response => {
+                        response.rows.forEach(item => {
+                            if(item.link === link) {
+                                console.log(`\nhttp://${req.headers.host}/${item.id}`);
+                                fresh = false;
+                            }
+                        });
+                        if(fresh) {
+                            pool.query(`INSERT INTO links (id, link) VALUES ('${linkId}', '${link}');`).then(response => {
+                                console.log(response);
+                            });
+                        }
+                    });
+                    res.end(`LINK HAS BEEN SUCCESFULLY STORED ${linkId}`);
                 }
             } catch(err) {
                 res.end(err.message);
@@ -52,6 +68,8 @@ http.createServer((req, res) => {
         res.writeHead(302, {
             'location': 'https://yaoleksa.github.io/tutorial/3.html#chapter6'
         });
+    } else {
+        res.end();
     }
 }).listen(process.env.PORT, process.env.HOSTNAME, () => {
     console.log(`http://${process.env.HOSTNAME}:${process.env.PORT}`);
