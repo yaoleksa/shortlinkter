@@ -65,8 +65,14 @@ http.createServer((req, res) => {
             }
         });
     } else if(req.method === 'GET' && req.url.toString().match(/\w+/)) {
-        res.writeHead(302, {
-            'location': 'https://yaoleksa.github.io/tutorial/3.html#chapter6'
+        pool.query(`SELECT link FROM links WHERE id='${req.url.toString().match(/\w+/)[0]}'`).then(response => {
+            console.log(response.rows[0].link);
+            res.writeHead(302, {
+                'location': response.rows[0].link
+            });
+            res.end();
+        }).catch(err => {
+            console.log(err.message);
         });
     } else {
         res.end();
