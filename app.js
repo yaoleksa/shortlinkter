@@ -48,7 +48,6 @@ http.createServer((req, res) => {
                     pool.query('SELECT * FROM links;').then(response => {
                         response.rows.forEach(item => {
                             if(item.link === link) {
-                                console.log(`\nhttp://${req.headers.host}/${item.id}`);
                                 fresh = false;
                             }
                         });
@@ -75,6 +74,9 @@ http.createServer((req, res) => {
             console.log(err.message);
         });
     } else {
+        res.writeHead(302, {
+            'location': 'https://yaoleksa.github.io/shortlinkter/'
+        });
         res.end();
     }
 }).listen(process.env.PORT, process.env.HOSTNAME, () => {
