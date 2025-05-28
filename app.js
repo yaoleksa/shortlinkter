@@ -44,20 +44,21 @@ http.createServer((req, res) => {
                     res.end("ERROR: INVALID URL FORMAT");
                 } else {
                     const linkId = idGen.rnd();
-                    let fresh = true;
+                    let fresh;
                     pool.query('SELECT * FROM links;').then(response => {
                         response.rows.forEach(item => {
                             if(item.link === link) {
-                                fresh = false;
+                                fresh = item.id;
                             }
                         });
-                        if(fresh) {
+                        if(!fresh) {
                             pool.query(`INSERT INTO links (id, link) VALUES ('${linkId}', '${link}');`).then(response => {
-                                console.log(response);
+                                res.end(`LINK WAS SUCCESSFULY SHORTED AND SAVED WITH: http://${req.headers.host}/${linkId}`);
                             });
+                        } else {
+                            res.end(`LINK ALREADY EXISTS: http://${req.headers.host}/${fresh}`);
                         }
                     });
-                    res.end(`LINK HAS BEEN SUCCESFULLY STORED ${linkId}`);
                 }
             } catch(err) {
                 res.end(err.message);
@@ -65,13 +66,12 @@ http.createServer((req, res) => {
         });
     } else if(req.method === 'GET' && req.url.toString().match(/\w+/)) {
         pool.query(`SELECT link FROM links WHERE id='${req.url.toString().match(/\w+/)[0]}'`).then(response => {
-            console.log(response.rows[0].link);
             res.writeHead(302, {
                 'location': response.rows[0].link
             });
             res.end();
         }).catch(err => {
-            console.log(err.message);
+            res.end(err.message);
         });
     } else {
         res.writeHead(302, {
