@@ -33,6 +33,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS links (id character(${idLength}) PRIMARY 
 });
 
 http.createServer((req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     if(req.method === 'POST') {
         let body = '';
         req.on('data', chunk => {
