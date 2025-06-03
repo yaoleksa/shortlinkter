@@ -33,54 +33,53 @@ pool.query(`CREATE TABLE IF NOT EXISTS links (id character(${idLength}) PRIMARY 
 });
 
 http.createServer((req, res) => {
-    res.end("Server is OK");
-    // res.setHeader('Access-Control-Allow-Origin', '*');
-    // if(req.method === 'POST') {
-    //     let body = '';
-    //     req.on('data', chunk => {
-    //         body += chunk;
-    //     }).on('end', () => {
-    //         try {
-    //             const link = JSON.parse(body.replace(/\'/g, "''"))["link"];
-    //             if(!link.match(/http[s]{0,1}:\/\/\w+/)) {
-    //                 res.end("ERROR: INVALID URL FORMAT");
-    //             } else {
-    //                 const linkId = idGen.rnd();
-    //                 let fresh;
-    //                 pool.query('SELECT * FROM links;').then(response => {
-    //                     response.rows.forEach(item => {
-    //                         if(item.link === link) {
-    //                             fresh = item.id;
-    //                         }
-    //                     });
-    //                     if(!fresh) {
-    //                         pool.query(`INSERT INTO links (id, link) VALUES ('${linkId}', '${link}');`).then(response => {
-    //                             res.end(`http://${req.headers.host}/${linkId}`);
-    //                         });
-    //                     } else {
-    //                         res.end(`http://${req.headers.host}/${fresh}`);
-    //                     }
-    //                 });
-    //             }
-    //         } catch(err) {
-    //             res.end(err.message);
-    //         }
-    //     });
-    // } else if(req.method === 'GET' && req.url.toString().match(/\w+/)) {
-    //     pool.query(`SELECT link FROM links WHERE id='${req.url.toString().match(/\w+/)[0]}'`).then(response => {
-    //         res.writeHead(302, {
-    //             'location': response.rows[0].link
-    //         });
-    //         res.end();
-    //     }).catch(err => {
-    //         res.end(err.message);
-    //     });
-    // } else {
-    //     res.writeHead(302, {
-    //         'location': 'https://yaoleksa.github.io/shortlinkter/'
-    //     });
-    //     res.end();
-    // }
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    if(req.method === 'POST') {
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk;
+        }).on('end', () => {
+            try {
+                const link = JSON.parse(body.replace(/\'/g, "''"))["link"];
+                if(!link.match(/http[s]{0,1}:\/\/\w+/)) {
+                    res.end("ERROR: INVALID URL FORMAT");
+                } else {
+                    const linkId = idGen.rnd();
+                    let fresh;
+                    pool.query('SELECT * FROM links;').then(response => {
+                        response.rows.forEach(item => {
+                            if(item.link === link) {
+                                fresh = item.id;
+                            }
+                        });
+                        if(!fresh) {
+                            pool.query(`INSERT INTO links (id, link) VALUES ('${linkId}', '${link}');`).then(response => {
+                                res.end(`http://${req.headers.host}/${linkId}`);
+                            });
+                        } else {
+                            res.end(`http://${req.headers.host}/${fresh}`);
+                        }
+                    });
+                }
+            } catch(err) {
+                res.end(err.message);
+            }
+        });
+    } else if(req.method === 'GET' && req.url.toString().match(/\w+/)) {
+        pool.query(`SELECT link FROM links WHERE id='${req.url.toString().match(/\w+/)[0]}'`).then(response => {
+            res.writeHead(302, {
+                'location': response.rows[0].link
+            });
+            res.end();
+        }).catch(err => {
+            res.end(err.message);
+        });
+    } else {
+        res.writeHead(302, {
+            'location': 'https://yaoleksa.github.io/shortlinkter/'
+        });
+        res.end();
+    }
 }).listen(process.env.PORT, process.env.HOSTNAME, () => {
     console.log(`http://${process.env.HOSTNAME}:${process.env.PORT}`);
 });
