@@ -75,10 +75,10 @@ http.createServer((req, res) => {
             res.end(err.message);
         });
     } else {
-        res.writeHead(302, {
-            'location': 'https://yaoleksa.github.io/shortlinkter/'
-        });
-        res.end();
+        // res.writeHead(302, {
+        //     'location': 'https://yaoleksa.github.io/shortlinkter/'
+        // });
+        res.end("Server is OK");
     }
 }).listen(process.env.PORT, process.env.HOSTNAME, () => {
     console.log(`http://${process.env.HOSTNAME}:${process.env.PORT}`);
