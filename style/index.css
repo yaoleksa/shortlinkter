@@ -3,7 +3,7 @@
     grid-template-columns: 1fr;
     width: 25%;
 }
-#button {
+.button {
     width: 15%;
     margin: 0.5rem 0 0 23rem;
 }
