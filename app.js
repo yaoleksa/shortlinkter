@@ -54,10 +54,10 @@ http.createServer((req, res) => {
                         });
                         if(!fresh) {
                             pool.query(`INSERT INTO links (id, link) VALUES ('${linkId}', '${link}');`).then(response => {
-                                res.end(`http://${req.headers.host}/${linkId}`);
+                                res.end(`https://shortlinkter.onrender.com/${linkId}`);
                             });
                         } else {
-                            res.end(`http://${req.headers.host}/${fresh}`);
+                            res.end(`https://shortlinkter.onrender.com/${fresh}`);
                         }
                     });
                 }
