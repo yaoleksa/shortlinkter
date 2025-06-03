@@ -12,7 +12,7 @@ const idGen = new ShortUniqueId({ length: idLength });
 
 // Create an pool to interact with database
 const pool = new Pool({
-    connectionString: `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOSTNAME}.${process.env.DB_REGION}.render.com/${process.env.DB_NAME}`,
+    connectionString: `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOSTNAME}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
     ssl: {
         rejectUnauthorized: false
     }
@@ -40,7 +40,7 @@ http.createServer((req, res) => {
             body += chunk;
         }).on('end', () => {
             try {
-                const link = JSON.parse(body)["link"];
+                const link = JSON.parse(body.replace(/\'/g, "''"))["link"];
                 if(!link.match(/http[s]{0,1}:\/\/\w+/)) {
                     res.end("ERROR: INVALID URL FORMAT");
                 } else {
@@ -54,10 +54,10 @@ http.createServer((req, res) => {
                         });
                         if(!fresh) {
                             pool.query(`INSERT INTO links (id, link) VALUES ('${linkId}', '${link}');`).then(response => {
-                                res.end(`LINK WAS SUCCESSFULY SHORTED AND SAVED WITH: http://${req.headers.host}/${linkId}`);
+                                res.end(`http://${req.headers.host}/${linkId}`);
                             });
                         } else {
-                            res.end(`LINK ALREADY EXISTS: http://${req.headers.host}/${fresh}`);
+                            res.end(`http://${req.headers.host}/${fresh}`);
                         }
                     });
                 }

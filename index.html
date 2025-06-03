@@ -8,8 +8,13 @@
   </head>
   <body>
     <div id="root">
-      <input id="input" type="url" />
+      <label for="input">Enter a valid URL</label>
+      <input id="input" type="url" name="input" placeholder="URL" />
       <button id="button">Submit</button>
+      <br>
+      <span class="flex-items">
+        <p id="result-label"></p><a href="" id="result"></a>
+      </span>
     </div>
   </body>
 </html>
