@@ -36,5 +36,14 @@
 ..||||....||...||..|||||||..||..||.....||.....|||||..||......||..|||||..||..||.........................
 .......................................................................................................
 .......................................................................................................
-
+# YALS API documentation
+## Purpose
+I guess that the name of my API says about itself, but despite this, I will make a short explanation. So the purpose of this API is to make long hypertext references shorter
+## Usage
+If you want to short cut some link you just make an API call to this address `https://shortlinkter.onrender.com` with `POST` HTTP method and body like this
+```
+{
+    "link": "http://127.0.0.1"
+}
+```
 
