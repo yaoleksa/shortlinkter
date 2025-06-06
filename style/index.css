@@ -4,11 +4,13 @@
     width: 25%;
 }
 .button {
-    width: 15%;
-    margin: 0.5rem 0 0 23rem;
+    margin: 0.5rem;
 }
 .flex-items {
     display: flex;
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+    margin-left: 22rem;
 }
 #result {
     margin: 0.9rem;
