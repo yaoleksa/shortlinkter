@@ -40,10 +40,13 @@
 ## Purpose
 I guess that the name of my API says about itself, but despite this, I will make a short explanation. So the purpose of this API is to make long hypertext references shorter
 ## Usage
-If you want to shortcut some link, you just make an API call to this address `https://shortlinkter.onrender.com` with a `POST` HTTP method and body like this
+If you want to shortcut some link, you just make an API call to this address `https://shortlinkter.onrender.com` (or any address where you'll host my app) with a `POST` HTTP method and body like this
 ```
 {
     "link": "http://127.0.0.1"
 }
 ```
 
+If everything were done properly, you should get a similar response: `http[s]://[host_of_this_API]/four-digits-id`. In my case, it's something like that `https://shortlinkter.onrender.com/5fTz`
+>[!IMPORTANT]
+>If you make an API call twice, you don't create two short links, the second time the API returns the already created link shortcut
