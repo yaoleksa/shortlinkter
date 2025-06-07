@@ -51,4 +51,6 @@ If everything were done properly, you should get a similar response: `http[s]://
 >[!IMPORTANT]
 >If you make an API call twice, you don't create two short links, the second time, the API returns the already created link shortcut
 >[!WARNING]
->Funny moment:) You can create a shortcut link via this API, but you can not delete it, so think twice before makinging a link shortcut or not, it's up to you;)
+>Funny moment:) You can create a shortcut link via this API, but you can not delete it, so think twice before making a link shortcut or not, it's up to you;)
+## UI
+If you are not a lover of programming stuff like me, there is an ugly user interface, pretty simple but not pretty beautiful, cause I've been focusing on API logic during I developed this project, so it's up to you - using a simple API or an ugly interface. This is a link to the API UI `https://yaoleksa.github.io/shortlinkter/`
