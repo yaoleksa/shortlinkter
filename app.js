@@ -1,7 +1,7 @@
 // Enable environment variables
 require('dotenv').config();
 const http = require('http');
-const { Pool } = require('pg');
+const axios = require('axios');
 
 // Define an id length
 const idLength = 4;
@@ -9,28 +9,6 @@ const idLength = 4;
 // Create an id generator
 const ShortUniqueId = require('short-unique-id');
 const idGen = new ShortUniqueId({ length: idLength });
-
-// Create an pool to interact with database
-const pool = new Pool({
-    connectionString: `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOSTNAME}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
-    ssl: {
-        rejectUnauthorized: false
-    }
-});
-
-// Connect with database
-pool.connect().then(() => {
-    console.log('connected');
-}).catch(err => {
-    console.error(err.message);
-});
-
-// Initial query to create a table
-pool.query(`CREATE TABLE IF NOT EXISTS links (id character(${idLength}) PRIMARY KEY, link TEXT);`).then(() => {
-    console.log('table has been created');
-}).catch(err => {
-    console.error(err.message);
-});
 
 http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -44,35 +22,33 @@ http.createServer((req, res) => {
                 if(!link.match(/http[s]{0,1}:\/\/\w+/)) {
                     res.end("ERROR: INVALID URL FORMAT");
                 } else {
-                    const linkId = idGen.rnd();
-                    let fresh;
-                    pool.query('SELECT * FROM links;').then(response => {
-                        response.rows.forEach(item => {
-                            if(item.link === link) {
-                                fresh = item.id;
-                            }
-                        });
-                        if(!fresh) {
-                            pool.query(`INSERT INTO links (id, link) VALUES ('${linkId}', '${link}');`).then(response => {
-                                res.end(`https://shortlinkter.onrender.com/${linkId}`);
-                            });
-                        } else {
-                            res.end(`https://shortlinkter.onrender.com/${fresh}`);
-                        }
-                    });
+                    let linkId = idGen.rnd();
+                    axios.post(`https://script.google.com/macros/s/${process.env.ACTIVATION_ID}/exec`, {
+                        id: linkId,
+                        link: link
+                    }).then(response => {
+                        res.end(`https://shortlinkter.onrender.com/${response.data}`);
+                    }).catch(err => {
+                        res.end(err.message);
+                    })
                 }
             } catch(err) {
                 res.end(err.message);
             }
         });
     } else if(req.method === 'GET' && req.url.toString().match(/\w+/)) {
-        pool.query(`SELECT link FROM links WHERE id='${req.url.toString().match(/\w+/)[0]}'`).then(response => {
+        console.log(req.url.toString().match(/\w+/)[0]);
+        axios.get(`https://script.google.com/macros/s/${process.env.ACTIVATION_ID}/exec`, {
+            params: {
+                id: req.url.toString().match(/\w+/)[0]
+            }
+        }).then(response => {
             res.writeHead(302, {
-                'location': response.rows[0].link
+                location: response.data
             });
             res.end();
         }).catch(err => {
-            res.end(err.message);
+            console.error(err.message);
         });
     } else {
         res.writeHead(302, {

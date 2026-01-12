@@ -11,8 +11,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "axios": "^1.13.2",
     "dotenv": "^16.5.0",
-    "pg": "^8.16.0",
     "short-unique-id": "^5.3.2"
   }
 }
