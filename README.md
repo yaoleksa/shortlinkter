@@ -49,8 +49,8 @@ If you want to shortcut some link, you just make an API call to this address `ht
 
 If everything were done properly, you should get a similar response: `http[s]://[host_of_this_API]/four-digits-id`. In my case, it's something like that `https://shortlinkter.onrender.com/5fTz`
 >[!IMPORTANT]
--If you make an API call twice, you don't create two short links, the second time, the API returns the already created link shortcut
--In addition of ACTIVATION_ID variable add HOSTNAME(127.0.0.1) and PORT(3000) variables to environmentals variables file `.env`
+>+ If you make an API call twice, you don't create two short links, the second time, the API returns the already created link shortcut
+>+ In addition of ACTIVATION_ID variable add HOSTNAME(127.0.0.1) and PORT(3000) variables to environmentals variables file `.env`
 
 >[!WARNING]
 >Funny moment:) You can create a shortcut link via this API, but you can not delete it, so think twice before making a link shortcut or not, it's up to you;)
