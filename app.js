@@ -23,8 +23,6 @@ http.createServer((req, res) => {
                     res.end("ERROR: INVALID URL FORMAT");
                 } else {
                     let linkId = idGen.rnd();
-                    res.end(`https://script.google.com/macros/s/${process.env.ACTIVATION_ID}/exec`);
-                    return;
                     axios.post(`https://script.google.com/macros/s/${process.env.ACTIVATION_ID}/exec`, {
                         id: linkId,
                         link: link
