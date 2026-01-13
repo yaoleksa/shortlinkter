@@ -29,11 +29,11 @@ http.createServer((req, res) => {
                     }).then(response => {
                         res.end(`https://shortlinkter.onrender.com/${response.data}`);
                     }).catch(err => {
-                        res.end(err.message);
+                        res.end(`POST.axios.HandledError: ${err.message}`);
                     })
                 }
             } catch(err) {
-                res.end(err.message);
+                res.end(`POST.HandledError: ${err.message}`);
             }
         });
     } else if(req.method === 'GET' && req.url.toString().match(/\w+/)) {
