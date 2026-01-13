@@ -13,12 +13,12 @@ const idGen = new ShortUniqueId({ length: idLength });
 http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     if(req.method === 'POST') {
-        let body = '';
+        const body = [];
         req.on('data', chunk => {
-            body += chunk;
+            body.push(chunk);
         }).on('end', () => {
             try {
-                const link = JSON.parse(body.replace(/\'/g, "''"))["link"];
+                const link = JSON.parse(body.join("").replace(/\'/g, "''")).link;
                 if(!link.match(/http[s]{0,1}:\/\/\w+/)) {
                     res.end("ERROR: INVALID URL FORMAT");
                 } else {

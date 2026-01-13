@@ -14,6 +14,6 @@ function doPost(e) {
     SpreadsheetApp.getActiveSpreadsheet().getSheetById(0).getRange(`A${rowForRecord}:B${rowForRecord}`).setValues([
       [data.id, data.link]
     ]);
-    return ContentService.createTextOutput(data.id);
+    return ContentService.createTextOutput(data.id); 
   }
 }
