@@ -37,7 +37,6 @@ http.createServer((req, res) => {
             }
         });
     } else if(req.method === 'GET' && req.url.toString().match(/\w+/)) {
-        console.log(req.url.toString().match(/\w+/)[0]);
         axios.get(`https://script.google.com/macros/s/${process.env.ACTIVATION_ID}/exec`, {
             params: {
                 id: req.url.toString().match(/\w+/)[0]
