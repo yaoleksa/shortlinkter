@@ -1,4 +1,5 @@
 // Enable environment variables
+require('dotenv').config();
 const http = require('http');
 const axios = require('axios');
 
@@ -8,6 +9,10 @@ const idLength = 4;
 // Create an id generator
 const ShortUniqueId = require('short-unique-id');
 const idGen = new ShortUniqueId({ length: idLength });
+
+// Define host and port
+const HOST = process.env.HOSTNAME ? process.env.HOSTNAME : '127.0.0.1';
+const PORT = process.env.PORT ? process.env.PORT : 3000;
 
 http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -26,7 +31,8 @@ http.createServer((req, res) => {
                         id: linkId,
                         link: link
                     }).then(response => {
-                        res.end(`https://shortlinkter.onrender.com/${response.data}`);
+                        console.log(`${req.headers.host}/${response.data}`);
+                        res.end(`https://${req.headers.host}/${response.data}`);
                     }).catch(err => {
                         res.end(`POST.axios.HandledError: ${err.message}`);
                     })
@@ -54,6 +60,6 @@ http.createServer((req, res) => {
         });
         res.end();
     }
-}).listen(process.env.PORT, process.env.HOSTNAME, () => {
-    console.log(`http://${process.env.HOSTNAME}:${process.env.PORT}`);
+}).listen(PORT, HOST, () => {
+    console.log(`http://${HOST}:${PORT}`);
 });
