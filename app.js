@@ -33,7 +33,7 @@ http.createServer((req, res) => {
                     }).then(response => {
                         res.end(`https://${req.headers.host}/${response.data}`);
                     }).catch(err => {
-                        res.end(`POST.axios.HandledError: ${err.message}`);
+                        res.end(`POST.axios.HandledError: ${err.message}. ENDPOINT: https://script.google.com/macros/s/${process.env.ACTIVATION_ID}exec`);
                     })
                 }
             } catch(err) {
