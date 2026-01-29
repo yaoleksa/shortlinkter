@@ -11,8 +11,8 @@ const ShortUniqueId = require('short-unique-id');
 const idGen = new ShortUniqueId({ length: idLength });
 
 // Define host and port
-const HOST = process.env.HOSTNAME ? process.env.HOSTNAME : '127.0.0.1';
-const PORT = process.env.PORT ? process.env.PORT : 3000;
+const HOST = process.env.HOSTNAME | '127.0.0.1';
+const PORT = process.env.PORT | 3000;
 
 http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
