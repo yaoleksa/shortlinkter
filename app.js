@@ -31,7 +31,6 @@ http.createServer((req, res) => {
                         id: linkId,
                         link: link
                     }).then(response => {
-                        console.log(`${req.headers.host}/${response.data}`);
                         res.end(`https://${req.headers.host}/${response.data}`);
                     }).catch(err => {
                         res.end(`POST.axios.HandledError: ${err.message}`);
