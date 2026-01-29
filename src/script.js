@@ -5,7 +5,7 @@ buttons[0].addEventListener('click', () => {
     const APIcall = new XMLHttpRequest();
     const result = document.getElementById('result');
     const resultLabel = document.getElementById('result-label');
-    APIcall.open('POST', 'https://shortlinkter.onrender.com/');
+    APIcall.open('POST', 'https://shortlinkter-a9da816b3360.herokuapp.com/');
     APIcall.onloadend = () => {
         resultLabel.innerText = "Cut down link: ";
         result.setAttribute('href', APIcall.responseText);
