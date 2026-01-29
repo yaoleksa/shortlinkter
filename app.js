@@ -1,5 +1,5 @@
 // Enable environment variables
-// require('dotenv').config();
+require('dotenv').config();
 const http = require('http');
 const axios = require('axios');
 
