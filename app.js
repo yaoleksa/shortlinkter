@@ -14,7 +14,7 @@ const idGen = new ShortUniqueId({ length: idLength });
 const HOST = process.env.HOSTNAME || '127.0.0.1';
 const PORT = process.env.PORT || 3000;
 
-console.log(http.createServer((req, res) => {
+http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     if(req.method === 'POST') {
         const body = [];
@@ -59,4 +59,6 @@ console.log(http.createServer((req, res) => {
         });
         res.end();
     }
-}).listen().address());
+}).listen(PORT, '0.0.0.0', () => {
+    console.log(`http://localhost:${PORT}`);
+});
