@@ -32,3 +32,11 @@
 ..|||||..||..||......||..||....||....||......||||||..||..||.........................................................................................................<br/>
 ....................................................................................................................................................................<br/>
 # DESCRIPTION
+The main idea is pretty simple. If you have a long, inconvenient URL, you can use this API to shorten it.
+# USAGE
+To cut a URL, make a POST HTTP request to this endpoint `https://shortlinkter-a9da816b3360.herokuapp.com/` with such body:
+```
+{
+  link: YOUR_URL
+}
+```
