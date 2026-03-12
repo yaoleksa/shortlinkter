@@ -1,6 +1,6 @@
 document.getElementById('submit').addEventListener('click', () => {
     const req = new XMLHttpRequest();
-    const inputURL = document.getElementById('input').innerText;
+    const inputURL = document.getElementById('input').value;
     if(inputURL.length < 1) {
         alert('Input cannot be empty!');
         return;
