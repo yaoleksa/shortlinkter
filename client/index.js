@@ -5,6 +5,11 @@ document.getElementById('submit').addEventListener('click', () => {
         link: document.getElementById('input').innerText
     });
     req.onload = () => {
-        console.log(req.response);
+        if(req.status !== 201) {
+            document.getElementById('result-label').innerText = req.statusText;
+        }
+        const result = document.getElementById('result');
+        result.setAttribute('href', req.response);
+        result.innerText = req.response;
     }
 });
