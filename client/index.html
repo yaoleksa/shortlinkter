@@ -1,0 +1,36 @@
+<!doctype html>
+<html dir="ltr" lang="uk" prefix="og: https://ogp.me/ns#">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./style/index.css"/>
+    <link rel="shortcut icon" href="./imgs/icon.png" />
+    <title>Interface for my new link shortener API</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:title" content="YALS" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="This is a handy user interface to shortcut any link which you consider too long" />
+    <meta property="og:url" content="https://yaoleksa.github.io/shortlinkter/" />
+    <meta property="og:image" content="./imgs/og.png" />
+    <script defer src="./src/script.js"></script>
+  </head>
+  <body>
+    <div id="root">
+      <span id="docs">
+        <a href="https://github.com/yaoleksa/shortlinkter.git" target="_blank">API docs</a>
+      </span>
+      <pre>
+
+      </pre>
+      <label for="input">Enter a valid URL</label>
+      <input id="input" type="url" name="input" placeholder="URL" />
+      <span id="flex-items">
+        <button class="button">Submit</button>
+        <button class="button">Clear</button>
+      </span>
+      <br>
+      <span id="response">
+        <p id="result-label"></p><a href="" target="_blank" id="result"></a>
+      </span>
+    </div>
+  </body>
+</html>
