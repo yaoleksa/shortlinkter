@@ -1,13 +1,17 @@
+const input = document.getElementById('input');
+document.getElementById('clear').addEventListener('click', () => {
+    input.value = '';
+});
 document.getElementById('submit').addEventListener('click', () => {
     const req = new XMLHttpRequest();
-    const inputURL = document.getElementById('input').value;
+    const inputURL = input.value;
     if(inputURL.length < 1) {
         alert('Input cannot be empty!');
         return;
     }
     req.open('POST', 'https://shortlinkter-a9da816b3360.herokuapp.com/', true);
     req.send({
-        link: inputURL
+        "link": `${inputURL}`
     });
     req.onload = () => {
         if(req.status !== 201) {
