@@ -20,5 +20,10 @@ document.getElementById('submit').addEventListener('click', () => {
         const result = document.getElementById('result');
         result.setAttribute('href', req.response);
         result.innerText = req.response;
-    }
+    };
+    req.onerror(err => {
+        if(err) {
+            console.log(`Error: ${err.message}`);
+        }
+    });
 });
