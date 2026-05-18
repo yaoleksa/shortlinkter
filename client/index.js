@@ -10,9 +10,9 @@ document.getElementById('submit').addEventListener('click', () => {
         return;
     }
     req.open('POST', 'https://shortlinkter-a9da816b3360.herokuapp.com/', true);
-    req.send({
+    req.send(JSON.stringify({
         "link": `${inputURL}`
-    });
+    }));
     req.onload = () => {
         if(req.status !== 201) {
             document.getElementById('result-label').innerText = req.statusText;
@@ -21,9 +21,5 @@ document.getElementById('submit').addEventListener('click', () => {
         result.setAttribute('href', req.response);
         result.innerText = req.response;
     };
-    req.onerror(err => {
-        if(err) {
-            console.log(`Error: ${err.message}`);
-        }
-    });
+    req.onerror = err => console.error(err.message);
 });
