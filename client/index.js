@@ -10,16 +10,18 @@ document.getElementById('submit').addEventListener('click', () => {
         return;
     }
     req.open('POST', 'https://shortlinkter-a9da816b3360.herokuapp.com/', true);
+    req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify({
         "link": `${inputURL}`
     }));
     req.onload = () => {
         if(req.status !== 201) {
             document.getElementById('result-label').innerText = req.statusText;
+            return; // important
         }
         const result = document.getElementById('result');
-        result.setAttribute('href', req.response);
-        result.innerText = req.response;
+        result.setAttribute('href', req.responseText);
+        result.innerText = req.responseText;
     };
     req.onerror = err => console.error(err.message);
 });
